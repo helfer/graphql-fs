@@ -1,5 +1,7 @@
 # GraphQL and the file system
 
-Just having some fun.
+Just having some fun using GraphQL for stuff.
 
-The goal of this package is to show how to read and write files via GraphQL.
+If we queried the filesystem using GraphQL, what would it look like?
+
+[ Work in pogress...]
