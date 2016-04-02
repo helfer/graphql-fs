@@ -1,13 +1,6 @@
-
-  createFile(dirPath: String!, name: String!, content: String!)
-  updateFile(filePath: String!, newContent: String!)
-  deleteFile(filePath: String!)
-
-  mkdir(dirPath: String!, name: String!)
-  rmdir(dirPath: String!)
-
-{
-  Directory: {
+import { FileLoader } from './loaders.js';
+export default {
+  /* Directory: {
     contents(obj){
       //return list of files/objects
     },
@@ -17,21 +10,25 @@
     files(obj){
       //return a list of file objects
     }
-  },
+  }, */
   File: {
-    contents(obj){
+    content(file){
       // return fs readfile
+      console.log('returning content!');
+      return file.read();
     }
   },
   Query: {
     file( obj, { path }){
+      const fl = new FileLoader();
+      return fl.open(path);
       // get file info and pass it to file
     },
-    dir(obj, { path }){
+    //dir(obj, { path }){
       // get the directory info at that path and pass it to dir
-    }
+    //}
   },
-  Mutation: {
+  /* Mutation: {
     createFile( obj, { dirPath, name, content }){
       //fs create file, return file
     },
@@ -48,5 +45,5 @@
     rmdir( obj, { dirPath }){
       // remove directory and return it
     },
-  }
+  }*/
 }
