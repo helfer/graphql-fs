@@ -14,7 +14,64 @@ describe('Reading files', () => {
     const query = '{ file(path: "./test/sample.txt"){ content } }'; 
     const expected = { data: { file: { content: "Hello world!\n" } } };
     graphql(schema, query).then( (res) => {
-      console.log(res);
+      assert.deepEqual(res, expected);
+      done();
+    });
+  });
+
+  it('Can get file size', (done) => {
+    const schema = generateSchema(typeDefinition, resolveFunctions);
+    const query = '{ file(path: "./test/sample.txt"){ size } }'; 
+    const expected = { data: { file: { size: 13 } } };
+    graphql(schema, query).then( (res) => {
+      assert.deepEqual(res, expected);
+      done();
+    });
+  });
+
+  it('Can get name and path', (done) => {
+    const schema = generateSchema(typeDefinition, resolveFunctions);
+    const query = '{ file(path: "./test/sample.txt"){ name, path } }'; 
+    const path = '/Users/helfer/workspace/helfer/graphql-fs/test/sample.txt';
+    const expected = { data: { file: { name: 'sample.txt', path: path } } };
+    graphql(schema, query).then( (res) => {
+      assert.deepEqual(res, expected);
+      done();
+    });
+  });
+});
+
+describe('Reading directories', () => {
+  it('Can find a directory and get the path and name', (done) => {
+    const schema = generateSchema(typeDefinition, resolveFunctions);
+    const query = '{ dir(path: "./test/"){ path name} }'; 
+    const path = '/Users/helfer/workspace/helfer/graphql-fs/test/';
+    const expected = { data: { dir: { path: path, name: 'test' } } };
+    graphql(schema, query).then( (res) => {
+      assert.deepEqual(res, expected);
+      done();
+    });
+  });
+
+  it('Can find a directory and list its contents', (done) => {
+    const schema = generateSchema(typeDefinition, resolveFunctions);
+    const query = '{ dir(path: "./test/"){ files { name }, subdirectories { name } } }'; 
+    const path = '/Users/helfer/workspace/helfer/graphql-fs/test/';
+    const expected = { data: 
+      { dir: 
+        { 
+          files: [
+            { name: 'babel-index.js' },
+            { name: 'index.js' },
+            { name: 'sample.txt' },
+          ],
+          subdirectories: [
+            { name: 'uga' },
+          ]
+        },
+      } 
+    };
+    graphql(schema, query).then( (res) => {
       assert.deepEqual(res, expected);
       done();
     });

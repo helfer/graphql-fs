@@ -1,32 +1,36 @@
 import { FileLoader } from './loaders.js';
 export default {
-  /* Directory: {
-    contents(obj){
-      //return list of files/objects
+  Directory: {
+    files(dir){
+      return dir.files();
     },
-    subdirectories(obj){
-      //return a list of file directories
+    //TODO: this resolver threw an error, but I had no idea where
+    // it came from. That's not good.
+    subdirectories(dir){
+      return dir.subdirectories();
     },
-    files(obj){
-      //return a list of file objects
-    }
-  }, */
+  },
   File: {
     content(file){
       // return fs readfile
-      console.log('returning content!');
       return file.read();
-    }
+    },
+
+    size(file){
+      return file.stats().then( stats => stats.size );
+    },
   },
   Query: {
     file( obj, { path }){
       const fl = new FileLoader();
-      return fl.open(path);
+      return fl.openFile(path);
       // get file info and pass it to file
     },
-    //dir(obj, { path }){
+    dir(obj, { path }){
       // get the directory info at that path and pass it to dir
-    //}
+      const fl = new FileLoader();
+      return fl.openDir(path);
+    }
   },
   /* Mutation: {
     createFile( obj, { dirPath, name, content }){

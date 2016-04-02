@@ -5,18 +5,20 @@ type Directory {
   name: String
   path: String
 #  parent: Directory
-#  contents: [FSNode]
-#  subdirectories: [Directory]
-#  files: [File]
+#  content: [File]
+  subdirectories(regEx: String): [Directory]
+  files(regEx: String): [File]
+#  file(name: String!): File
+#  subdirectory(name: String!): Directory
 }
 
 type File {
   name: String
   path: String
 #  directory: Directory
-  createdAt: String
-  owner: String
-  group: String
+#  createdAt: String
+#  owner: String
+#  group: String
 #  permissions: PermissionSet
   content: String
   size: Int
@@ -36,7 +38,7 @@ type Permission {
 
 type Query {
   file(path: String): File
-#  dir(path: String): Directory
+  dir(path: String): Directory
 }
 
 #type Mutation {
